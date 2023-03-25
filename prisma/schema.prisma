@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  // rằng buộc mỗi email là phải là duy nhất
+  email        String   @unique
+  hashPassword String
+  firstName    String?
+  lastName     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Tạo quan hệ giữa các bảng (RelationShip)
+  // 1 User có nhiều Notes
+  Note         Note[]
+
+  // Chỉ định tên bảng là users
+  @@map("users")
+}
+
+model Note {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  url         String
+  // other fields
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  //relationShip
+  userId Int // like như là foreign key
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("notes")
+}

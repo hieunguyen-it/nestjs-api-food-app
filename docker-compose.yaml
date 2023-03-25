@@ -1,0 +1,23 @@
+version: '3.8'
+
+services: 
+    dev-database:
+      image: 'postgres:15.2'
+      container_name: dev-database
+      ports: 
+        - 5434:5432 #{Port localhost : Port in container}
+      #{ Create Database with Postgres}
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: Hieu1995
+        POSTGRES_DB: testdb
+      #{ Tạo network mục đích có nhiều service có thể kết nối với nhau thì nó có thể dùng chung với nhau trong một mạng} 
+      networks:
+       - nestjs-network
+networks:
+  nestjs-network:
+
+#{ Run file docker-compose.yaml }
+
+# docker compose up -d
+# -d ( là detach mode)
